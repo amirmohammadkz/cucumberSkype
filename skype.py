@@ -35,9 +35,11 @@ def process():
         finally:
             con.close()
 
+
 @app.route('/addcontact')
 def addcontact():
     return render_template('addcontact.html')
+
 
 @app.route('/loginProcess', methods=['POST'])
 def loginProcess():
@@ -75,8 +77,8 @@ def addContactProcess():
             contact = request.form['contact']
             if contact:
                 cur = con.cursor()
-                myid = cur.execute("SELECT id FROM users WHERE username=?'' ",(username))
-                toid = cur.execute("SELECT id FROM users WHERE username=?'' ",(contact))
+                myid = cur.execute("SELECT id FROM users WHERE username=?'' ", (username))
+                toid = cur.execute("SELECT id FROM users WHERE username=?'' ", (contact))
                 cur.execute("INSERT INTO contacts (from,to) VALUES(?,?)", (myid, toid))
                 con.commit()
                 return jsonify({'contact': contact})
@@ -84,6 +86,7 @@ def addContactProcess():
                 return jsonify({'error': 'Missing data!'})
         except:
             con.rollback()
+
 
 if __name__ == '__main__':
     app.run(debug=True)

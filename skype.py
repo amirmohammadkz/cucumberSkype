@@ -35,6 +35,16 @@ def process():
         finally:
             con.close()
 
+@app.route('/loginProcess', methods=['POST'])
+def loginProcess():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        if username and password:
+            return jsonify({'name': username})
+        else:
+            return jsonify({'error': 'Missing data!'})
 
 if __name__ == '__main__':
     app.run(debug=True)

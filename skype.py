@@ -71,31 +71,55 @@ def loginProcess():
                 con.close()
 
 
-@app.route('/addcontactprocess', methods=['POST'])
-def addContactProcess():
-    if request.method == 'POST':
-        if 'username' in session:
-            username = session['username']
-            con = sqlite3.connect("skype")
-            print (username)
-            try:
-                contact = request.form['contact']
-                if contact:
-                    cur = con.cursor()
-                    myid = cur.execute("SELECT id FROM users WHERE username=?'' ", (username))
-                    toid = cur.execute("SELECT id FROM users WHERE username=?'' ", (contact))
-                    cur.execute("INSERT INTO contacts (from,to) VALUES(?,?)", (myid, toid))
-                    con.commit()
-                    return jsonify({'contact': contact})
-                else:
-                    return jsonify({'error': 'Missing data!'})
-            except:
-                con.rollback()
+#
+# @app.route('/addcontactprocess', methods=['POST'])
+# def addContactProcess():
+#     if request.method == 'POST':
+#         if 'username' in session:
+#             username = session['username']
+#             con = sqlite3.connect("skype")
+#             print (username)
+#             try:
+#                 contact = request.form['contact']
+#                 if contact:
+#                     cur = con.cursor()
+#                     myid = cur.execute("SELECT id FROM users WHERE username=?'' ", (username))
+#                     toid = cur.execute("SELECT id FROM users WHERE username=?'' ", (contact))
+#                     cur.execute("INSERT INTO contacts (from,to) VALUES(?,?)", (myid, toid))
+#                     con.commit()
+#                     return jsonify({'contact': contact})
+#                 else:
+#                     return jsonify({'error': 'Missing data!'})
+#             except:
+#                 con.rollback()
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
+
+@app.route('/list')
+def list():
+    con = sqlite3.connect("skype")
+    con.row_factory = sqlite3.Row
+
+    cur = con.cursor()
+    cur.execute("select id from users Where username= ? ", [session['username']])
+    id = cur.fetchall()[0][0]
+    cur.execute("select fromContact,toContact from contacts where fromContact= ?", [id])
+    rows = cur.fetchall()
+    idlist = [row[1] for row in rows]
+    namelist = []
+    for id in idlist:
+        cur.execute("select username from users where id = ?", [id])
+        namelist.append(cur.fetchall()[0][0])
+    print(id)
+    print(rows)
+    # return "hello"
+    # fetchet_rows = [row for row in rows if (row[0])]
+    return render_template("list.html", rows=namelist)
+
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'

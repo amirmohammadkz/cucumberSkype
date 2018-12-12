@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import sqlite3
 
 app = Flask(__name__)
@@ -56,6 +56,8 @@ def loginProcess():
                 user = [i for i in users if i[0] == username]
                 if (len(user) > 0):
                     if (str(user[0][1]) == password):
+                        print("fuck?")
+                        session['username'] = username
                         return jsonify({'name': username})
                     else:
                         return jsonify({'error': 'username or password is incorrect!'})
@@ -72,21 +74,32 @@ def loginProcess():
 @app.route('/addcontactprocess', methods=['POST'])
 def addContactProcess():
     if request.method == 'POST':
-        con = sqlite3.connect("skype")
-        try:
-            contact = request.form['contact']
-            if contact:
-                cur = con.cursor()
-                myid = cur.execute("SELECT id FROM users WHERE username=?'' ", (username))
-                toid = cur.execute("SELECT id FROM users WHERE username=?'' ", (contact))
-                cur.execute("INSERT INTO contacts (from,to) VALUES(?,?)", (myid, toid))
-                con.commit()
-                return jsonify({'contact': contact})
-            else:
-                return jsonify({'error': 'Missing data!'})
-        except:
-            con.rollback()
+        if 'username' in session:
+            username = session['username']
+            con = sqlite3.connect("skype")
+            print (username)
+            try:
+                contact = request.form['contact']
+                if contact:
+                    cur = con.cursor()
+                    myid = cur.execute("SELECT id FROM users WHERE username=?'' ", (username))
+                    toid = cur.execute("SELECT id FROM users WHERE username=?'' ", (contact))
+                    cur.execute("INSERT INTO contacts (from,to) VALUES(?,?)", (myid, toid))
+                    con.commit()
+                    return jsonify({'contact': contact})
+                else:
+                    return jsonify({'error': 'Missing data!'})
+            except:
+                con.rollback()
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
+
+    app.debug = True
     app.run(debug=True)

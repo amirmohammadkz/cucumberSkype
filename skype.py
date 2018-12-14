@@ -71,27 +71,36 @@ def loginProcess():
                 con.close()
 
 
-#
-# @app.route('/addcontactprocess', methods=['POST'])
-# def addContactProcess():
-#     if request.method == 'POST':
-#         if 'username' in session:
-#             username = session['username']
-#             con = sqlite3.connect("skype")
-#             print (username)
-#             try:
-#                 contact = request.form['contact']
-#                 if contact:
-#                     cur = con.cursor()
-#                     myid = cur.execute("SELECT id FROM users WHERE username=?'' ", (username))
-#                     toid = cur.execute("SELECT id FROM users WHERE username=?'' ", (contact))
-#                     cur.execute("INSERT INTO contacts (from,to) VALUES(?,?)", (myid, toid))
-#                     con.commit()
-#                     return jsonify({'contact': contact})
-#                 else:
-#                     return jsonify({'error': 'Missing data!'})
-#             except:
-#                 con.rollback()
+
+@app.route('/addcontactprocess', methods=['POST'])
+def addContactProcess():
+    if request.method == 'POST':
+        if 'username' in session:
+            username = session['username']
+            con = sqlite3.connect("skype")
+            print (username)
+            try:
+                contact = request.form['contact']
+                if contact:
+                    cur = con.cursor()
+                    cur.execute("SELECT id,username FROM users")
+                    users = cur.fetchall()
+                    thisusername = [i for i in users if i[1] == username]
+                    thiscontact = [i for i in users if i[1] == contact]
+                    myid = thisusername[0][0]
+                    toid = thiscontact[0][0]
+                    print(myid)
+                    print(toid)
+                    cur.execute("INSERT INTO contacts (fromContact,toContact) VALUES(?,?)", (myid, toid))
+                    con.commit()
+                    
+                    return jsonify({'contact': contact})
+                else:
+                    return jsonify({'error': 'Missing data!'})
+            except:
+                print ("Except")
+                con.rollback()
+#### ye moshkeli ke hast ine ke age db khali bashe be error mikhorim
 
 @app.route('/logout')
 def logout():
@@ -119,7 +128,6 @@ def list():
     # return "hello"
     # fetchet_rows = [row for row in rows if (row[0])]
     return render_template("list.html", rows=namelist)
-
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'

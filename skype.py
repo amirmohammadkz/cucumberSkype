@@ -78,7 +78,6 @@ def addContactProcess():
         if 'username' in session:
             username = session['username']
             con = sqlite3.connect("skype")
-            print (username)
             try:
                 contact = request.form['contact']
                 if contact:
@@ -89,8 +88,8 @@ def addContactProcess():
                     thiscontact = [i for i in users if i[1] == contact]
                     myid = thisusername[0][0]
                     toid = thiscontact[0][0]
-                    print(myid)
-                    print(toid)
+                    # print(myid)
+                    # print(toid)
                     cur.execute("INSERT INTO contacts (fromContact,toContact) VALUES(?,?)", (myid, toid))
                     con.commit()
                     
@@ -100,7 +99,6 @@ def addContactProcess():
             except:
                 print ("Except")
                 con.rollback()
-#### ye moshkeli ke hast ine ke age db khali bashe be error mikhorim
 
 @app.route('/logout')
 def logout():

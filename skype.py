@@ -1,7 +1,13 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask_sse import sse
+from channel import channel
+from flask import Blueprint
 import sqlite3
 
 app = Flask(__name__)
+app.config["REDIS_URL"] = "redis://localhost"
+app.register_blueprint(sse, url_prefix='/stream')
+app.register_blueprint(channel, url_prefix='/channel')
 
 
 @app.route('/')
@@ -126,6 +132,34 @@ def list():
     # return "hello"
     # fetchet_rows = [row for row in rows if (row[0])]
     return render_template("list.html", rows=namelist)
+
+
+
+
+
+
+# @app.route('/waitorjoin', methods=['POST'])
+# def addContactProcess():
+#     if request.method == 'POST':
+#         if 'username' in session:
+#             username = session['username']
+            # con = sqlite3.connect("skype")
+            
+
+@app.route("/wait/<Cid>")
+def waitPage(Cid):
+    print ("Wait")
+    print (Cid)
+    return render_template("wait.html", name=Cid)
+
+@app.route("/join/<Cid>")
+def joinPage(Cid):
+    print ("Join")
+    print (Cid)
+    return render_template("join.html", name=Cid)
+
+
+
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'

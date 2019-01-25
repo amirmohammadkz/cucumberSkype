@@ -2,9 +2,11 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 from flask_sse import sse
 from channel import channel
 from flask import Blueprint
+from flask_socketio import SocketIO, join_room, close_room
 import sqlite3
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 app.config["REDIS_URL"] = "redis://localhost"
 app.register_blueprint(sse, url_prefix='/stream')
 app.register_blueprint(channel, url_prefix='/channel')
@@ -12,12 +14,23 @@ app.register_blueprint(channel, url_prefix='/channel')
 
 @app.route('/')
 def index():
-    return render_template('form.html')
-
-
-@app.route('/login')
-def login():
     return render_template('login.html')
+
+# @app.route('/chat')
+# def sessions():
+#     return render_template('chat.html', username=[session['username']])
+
+def messageReceived():
+    print('message was received!!!')
+
+@socketio.on('my event')
+def handle_my_custom_event(json):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)
+
+@app.route('/signup')
+def login():
+    return render_template('form.html')
 
 
 @app.route('/process', methods=['POST'])
@@ -29,7 +42,6 @@ def process():
             password = request.form['password']
 
             if username and password:
-                # with sqlite3.connect("skype") as con:
                 cur = con.cursor()
                 cur.execute("INSERT INTO users (username,password) VALUES(?,?)", (username, password))
                 con.commit()
@@ -60,16 +72,14 @@ def loginProcess():
                 cur.execute("SELECT username, password FROM users")
                 users = cur.fetchall()
                 user = [i for i in users if i[0] == username]
-                if (len(user) > 0):
-                    if (str(user[0][1]) == password):
-                        print("fuck?")
+                if len(user) > 0:
+                    if str(user[0][1]) == password:
                         session['username'] = username
                         return jsonify({'name': username})
                     else:
                         return jsonify({'error': 'username or password is incorrect!'})
                 else:
                     return jsonify({'error': 'username or password is incorrect!'})
-                # con.commit()
             except Exception as e:
                 print(e)
                 return jsonify({'error': 'something went wrong!'})
@@ -94,8 +104,6 @@ def addContactProcess():
                     thiscontact = [i for i in users if i[1] == contact]
                     myid = thisusername[0][0]
                     toid = thiscontact[0][0]
-                    # print(myid)
-                    # print(toid)
                     cur.execute("INSERT INTO contacts (fromContact,toContact) VALUES(?,?)", (myid, toid))
                     con.commit()
                     
@@ -122,42 +130,41 @@ def list():
     id = cur.fetchall()[0][0]
     cur.execute("select fromContact,toContact from contacts where fromContact= ?", [id])
     rows = cur.fetchall()
-    idlist = [row[1] for row in rows]
+    id_list = [row[1] for row in rows]
     namelist = []
-    for id in idlist:
+    for id in id_list:
         cur.execute("select username from users where id = ?", [id])
         namelist.append(cur.fetchall()[0][0])
     print(id)
     print(rows)
-    # return "hello"
-    # fetchet_rows = [row for row in rows if (row[0])]
     return render_template("list.html", rows=namelist)
 
 
-
-
-
-
-# @app.route('/waitorjoin', methods=['POST'])
-# def addContactProcess():
-#     if request.method == 'POST':
-#         if 'username' in session:
-#             username = session['username']
-            # con = sqlite3.connect("skype")
-            
-
-@app.route("/wait/<Cid>")
-def waitPage(Cid):
+@app.route("/wait/<Cid>", methods=['POST','GET'])
+def wait_page(Cid):
     print ("Wait")
     print (Cid)
-    return render_template("wait.html", name=Cid)
+    return render_template("wait.html", name=Cid, username=[session['username']])
 
-@app.route("/join/<Cid>")
-def joinPage(Cid):
+
+@app.route("/join/<Cid>", methods=['POST','GET'])
+def join_page(Cid):
     print ("Join")
     print (Cid)
-    return render_template("join.html", name=Cid)
+    print(Cid)
+    return render_template("join.html", name=Cid, username=[session['username']])
 
+@app.route("/wait_video/<Cid>")
+def wait_video(Cid):
+    print("wait_video")
+    print(Cid)
+    return render_template("wait_video.html", name=Cid)
+
+@app.route("/join_video/<Cid>")
+def join_video(Cid):
+    print("join_video")
+    print(str(Cid) + "join_video")
+    return render_template("join_video.html", name=Cid)
 
 
 
@@ -166,4 +173,5 @@ if __name__ == '__main__':
     app.config['SESSION_TYPE'] = 'filesystem'
 
     app.debug = True
-    app.run(debug=True)
+    # app.run(debug=True)
+    socketio.run(app, debug= True, host="0.0.0.0")

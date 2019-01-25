@@ -35,8 +35,10 @@
         <td>
         <div> 
             <input id ="{{row}}" type="text" >
-            <button onclick="create()">create room </button> 
-            <button onclick="join()">join room</button>
+            <button onclick="create_chat()">create room </button>
+            <button onclick="join_chat()">join room</button>
+            <button onclick="create_video()">create video room </button>
+            <button onclick="join_video()">join video room</button>
         </div>
 
         
@@ -46,7 +48,7 @@
 </table>
 
         <script>
-        function create() 
+        function create_chat()
         {
             for (var i=0 ; i < a.length ; i++)
             {
@@ -54,12 +56,10 @@
                 if (name != "")
                 {
                     window.location="/wait/"+name;
-                
-                    //window.location="/wait/"+a[i]+"/"+name;
                 }
             }
         }
-        function join() 
+        function join_chat()
         {
             for (var i=0 ; i < a.length ; i++)
             {
@@ -67,6 +67,28 @@
                 if (name != "")
                 {
                     window.location="/join/"+name;
+                }
+            }
+        }
+        function create_video()
+        {
+            for (var i=0 ; i < a.length ; i++)
+            {
+                var name = document.getElementById(a[i]).value;
+                if (name != "")
+                {
+                    window.location="/wait_video/"+name;
+                }
+            }
+        }
+        function join_video()
+        {
+            for (var i=0 ; i < a.length ; i++)
+            {
+                var name = document.getElementById(a[i]).value;
+                if (name != "")
+                {
+                    window.location="/join_video/"+name;
                 }
             }
         }

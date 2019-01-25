@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f35edabe-a8bd-4cb5-9372-aa01a25b06ba" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/join_video.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/join_video.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/wait_video.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/wait_video.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,11 +29,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wait_video.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wait_video.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/wait_video.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="26" selection-start-line="26" selection-end-line="30" selection-end-column="13" />
+            <state relative-caret-position="15">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
               <folding>
                 <element signature="n#style#0;n#video#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#video#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -43,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="join_video.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="join_video.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/join_video.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
-              <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+              <caret line="35" column="13" lean-forward="true" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -90,8 +89,8 @@
       <find>created</find>
       <find>gotremo</find>
       <find>remoteVideo.srcObject = window.URL.createObjectURL(event.stream)</find>
-      <find>got</find>
       <find>gotRemoteStream</find>
+      <find>got</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -111,8 +110,8 @@
         <option value="$PROJECT_DIR$/skype.py" />
         <option value="$PROJECT_DIR$/static/waitjoin.js" />
         <option value="$PROJECT_DIR$/channel.py" />
-        <option value="$PROJECT_DIR$/templates/wait_video.html" />
         <option value="$PROJECT_DIR$/templates/join_video.html" />
+        <option value="$PROJECT_DIR$/templates/wait_video.html" />
       </list>
     </option>
   </component>
@@ -229,7 +228,21 @@
       <option name="project" value="LOCAL" />
       <updated>1548416965965</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="new turn server">
+      <created>1548418491822</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1548418491822</updated>
+    </task>
+    <task id="LOCAL-00003" summary="new turn server">
+      <created>1548451639007</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1548451639008</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -291,7 +304,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="latest" />
-    <option name="LAST_COMMIT_MESSAGE" value="latest" />
+    <MESSAGE value="new turn server" />
+    <option name="LAST_COMMIT_MESSAGE" value="new turn server" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/static/chat.js">
@@ -636,21 +650,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/join_video.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="35" column="13" lean-forward="true" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/wait_video.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="26" selection-start-line="26" selection-end-line="30" selection-end-column="13" />
+        <state relative-caret-position="15">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
           <folding>
             <element signature="n#style#0;n#video#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#video#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/join_video.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
         </state>
       </provider>
     </entry>

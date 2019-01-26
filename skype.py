@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, abort
 from flask_sse import sse
 from channel import channel
 from flask import Blueprint
@@ -59,6 +59,8 @@ def process():
 
 @app.route('/addcontact')
 def addcontact():
+    if not ('username' in session):
+        abort(401)
     return render_template('addcontact.html')
 
 
@@ -125,6 +127,8 @@ def logout():
 
 @app.route('/list')
 def list():
+    if not ('username' in session):
+        abort(401)
     con = sqlite3.connect("skype")
     con.row_factory = sqlite3.Row
 
@@ -145,6 +149,10 @@ def list():
 
 @app.route("/wait/<Cid>", methods=['POST', 'GET'])
 def wait_page(Cid):
+    if not ('username' in session):
+        abort(401)
+    elif not (session['username'] in Cid):
+        abort(401)
     print("Wait")
     print(Cid)
     return render_template("wait.html", name=Cid, username=[session['username']])
@@ -152,6 +160,10 @@ def wait_page(Cid):
 
 @app.route("/join/<Cid>", methods=['POST', 'GET'])
 def join_page(Cid):
+    if not ('username' in session):
+        abort(401)
+    elif not (session['username'] in Cid):
+        abort(401)
     print("Join")
     print(Cid)
     print(Cid)
@@ -160,6 +172,10 @@ def join_page(Cid):
 
 @app.route("/wait_video/<Cid>")
 def wait_video(Cid):
+    if not ('username' in session):
+        abort(401)
+    elif not (session['username'] in Cid):
+        abort(401)
     print("wait_video")
     print(Cid)
     return render_template("wait_video.html", name=Cid)
@@ -167,6 +183,10 @@ def wait_video(Cid):
 
 @app.route("/join_video/<Cid>")
 def join_video(Cid):
+    if not ('username' in session):
+        abort(401)
+    elif not (session['username'] in Cid):
+        abort(401)
     print("join_video")
     print(str(Cid) + "join_video")
     return render_template("join_video.html", name=Cid)

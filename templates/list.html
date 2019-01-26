@@ -22,10 +22,10 @@
     <!--<td>Pincode</td>-->
     </thead>
 
-        <script>
-            var counter = 0
-            var a=[]
-        </script>
+    <script>
+        var counter = 0
+        var a = []
+    </script>
     {% for row in rows %}
     <tr>
         <script>
@@ -33,66 +33,74 @@
         </script>
         <td>{{row}}</td>
         <td>
-        <div> 
-            <input id ="{{row}}" type="text" >
-            <button onclick="create_chat()">create room </button>
-            <button onclick="join_chat()">join room</button>
-            <button onclick="create_video()">create video room </button>
-            <button onclick="join_video()">join video room</button>
-        </div>
+            <div>
+                <input id="{{row}}" type="text">
+                <button onclick="create_chat({{row}})">create room</button>
+                <button onclick="join_chat({{row}})">join room</button>
+                <button onclick="create_video({{row}})">create video room</button>
+                <button onclick="join_video({{row}})">join video room</button>
+            </div>
 
-        
+
         </td>
     </tr>
     {% endfor %}
 </table>
 
-        <script>
-        function create_chat()
-        {
-            for (var i=0 ; i < a.length ; i++)
-            {
-                var name = document.getElementById(a[i]).value;
-                if (name != "")
-                {
-                    window.location="/wait/"+name;
-                }
+<script>
+    function create_chat(row) {
+        console.log("{{user}}");
+        console.log(row.id);
+        for (var i = 0; i < a.length; i++) {
+            var name = document.getElementById(a[i]).value;
+            if (name != "") {
+                if (row.id < "{{user}}")
+                    window.location = "/wait/" + name + row.id + "{{user}}";
+                else
+                    window.location = "/wait/" + name + "{{user}}" + row.id;
             }
         }
-        function join_chat()
-        {
-            for (var i=0 ; i < a.length ; i++)
-            {
-                var name = document.getElementById(a[i]).value;
-                if (name != "")
-                {
-                    window.location="/join/"+name;
-                }
+    }
+
+    function join_chat(row) {
+        for (var i = 0; i < a.length; i++) {
+            var name = document.getElementById(a[i]).value;
+            if (name != "") {
+                if (row.id < "{{user}}")
+                    window.location = "/wait/" + name + row.id + "{{user}}";
+                else
+                    window.location = "/wait/" + name + "{{user}}" + row.id;
+                // window.location = "/join/" + name;
             }
         }
-        function create_video()
-        {
-            for (var i=0 ; i < a.length ; i++)
-            {
-                var name = document.getElementById(a[i]).value;
-                if (name != "")
-                {
-                    window.location="/wait_video/"+name;
-                }
+    }
+
+    function create_video(row) {
+        for (var i = 0; i < a.length; i++) {
+            var name = document.getElementById(a[i]).value;
+            if (name != "") {
+                if (row.id < "{{user}}")
+                    window.location = "/wait/" + name + row.id + "{{user}}";
+                else
+                    window.location = "/wait/" + name + "{{user}}" + row.id;
+                // window.location = "/wait_video/" + name;
             }
         }
-        function join_video()
-        {
-            for (var i=0 ; i < a.length ; i++)
-            {
-                var name = document.getElementById(a[i]).value;
-                if (name != "")
-                {
-                    window.location="/join_video/"+name;
-                }
+    }
+
+    function join_video(row) {
+        for (var i = 0; i < a.length; i++) {
+            var name = document.getElementById(a[i]).value;
+            if (name != "") {
+                if (row.id < "{{user}}")
+                    window.location = "/wait/" + name + row.id + "{{user}}";
+                else
+                    window.location = "/wait/" + name + "{{user}}" + row.id;
+                // window.location = "/join_video/" + name;
             }
         }
-        </script>
+    }
+</script>
 <a href="/">Go back to home page</a>
 
 </body>

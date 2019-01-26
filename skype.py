@@ -16,6 +16,7 @@ app.register_blueprint(channel, url_prefix='/channel')
 def index():
     return render_template('login.html')
 
+
 # @app.route('/chat')
 # def sessions():
 #     return render_template('chat.html', username=[session['username']])
@@ -23,10 +24,12 @@ def index():
 def messageReceived():
     print('message was received!!!')
 
+
 @socketio.on('my event')
 def handle_my_custom_event(json):
     print('received my event: ' + str(json))
     socketio.emit('my response', json, callback=messageReceived)
+
 
 @app.route('/signup')
 def login():
@@ -87,7 +90,6 @@ def loginProcess():
                 con.close()
 
 
-
 @app.route('/addcontactprocess', methods=['POST'])
 def addContactProcess():
     if request.method == 'POST':
@@ -106,13 +108,14 @@ def addContactProcess():
                     toid = thiscontact[0][0]
                     cur.execute("INSERT INTO contacts (fromContact,toContact) VALUES(?,?)", (myid, toid))
                     con.commit()
-                    
+
                     return jsonify({'contact': contact})
                 else:
                     return jsonify({'error': 'Missing data!'})
             except:
-                print ("Except")
+                print("Except")
                 con.rollback()
+
 
 @app.route('/logout')
 def logout():
@@ -137,28 +140,30 @@ def list():
         namelist.append(cur.fetchall()[0][0])
     print(id)
     print(rows)
-    return render_template("list.html", rows=namelist)
+    return render_template("list.html", rows=namelist, user=session['username'])
 
 
-@app.route("/wait/<Cid>", methods=['POST','GET'])
+@app.route("/wait/<Cid>", methods=['POST', 'GET'])
 def wait_page(Cid):
-    print ("Wait")
-    print (Cid)
+    print("Wait")
+    print(Cid)
     return render_template("wait.html", name=Cid, username=[session['username']])
 
 
-@app.route("/join/<Cid>", methods=['POST','GET'])
+@app.route("/join/<Cid>", methods=['POST', 'GET'])
 def join_page(Cid):
-    print ("Join")
-    print (Cid)
+    print("Join")
+    print(Cid)
     print(Cid)
     return render_template("join.html", name=Cid, username=[session['username']])
+
 
 @app.route("/wait_video/<Cid>")
 def wait_video(Cid):
     print("wait_video")
     print(Cid)
     return render_template("wait_video.html", name=Cid)
+
 
 @app.route("/join_video/<Cid>")
 def join_video(Cid):
@@ -167,11 +172,10 @@ def join_video(Cid):
     return render_template("join_video.html", name=Cid)
 
 
-
 if __name__ == '__main__':
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
 
     app.debug = True
     # app.run(debug=True)
-    socketio.run(app, debug= True, host="0.0.0.0")
+    socketio.run(app, debug=True, host="0.0.0.0")

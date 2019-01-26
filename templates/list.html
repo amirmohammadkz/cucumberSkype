@@ -67,9 +67,9 @@
             var name = document.getElementById(a[i]).value;
             if (name != "") {
                 if (row.id < "{{user}}")
-                    window.location = "/wait/" + name + row.id + "{{user}}";
+                    window.location = "/join/" + name + row.id + "{{user}}";
                 else
-                    window.location = "/wait/" + name + "{{user}}" + row.id;
+                    window.location = "/join/" + name + "{{user}}" + row.id;
                 // window.location = "/join/" + name;
             }
         }
@@ -80,9 +80,9 @@
             var name = document.getElementById(a[i]).value;
             if (name != "") {
                 if (row.id < "{{user}}")
-                    window.location = "/wait/" + name + row.id + "{{user}}";
+                    window.location = "/wait_video/" + name + row.id + "{{user}}";
                 else
-                    window.location = "/wait/" + name + "{{user}}" + row.id;
+                    window.location = "/wait_video/" + name + "{{user}}" + row.id;
                 // window.location = "/wait_video/" + name;
             }
         }
@@ -93,9 +93,9 @@
             var name = document.getElementById(a[i]).value;
             if (name != "") {
                 if (row.id < "{{user}}")
-                    window.location = "/wait/" + name + row.id + "{{user}}";
+                    window.location = "/join_video/" + name + row.id + "{{user}}";
                 else
-                    window.location = "/wait/" + name + "{{user}}" + row.id;
+                    window.location = "/join_video/" + name + "{{user}}" + row.id;
                 // window.location = "/join_video/" + name;
             }
         }
